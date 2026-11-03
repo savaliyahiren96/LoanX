@@ -103,6 +103,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               {t.navBankRates}
             </button>
             <button
+              onClick={() => onNavigateSection('advisor')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 ${
+                activeSection === 'advisor'
+                  ? 'bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 font-semibold ring-1 ring-purple-400/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+              <span>{t.navAdvisor}</span>
+            </button>
+            <button
               onClick={() => onNavigateSection('schemes')}
               className={`px-3 py-1.5 rounded-lg transition-all ${
                 activeSection === 'schemes'

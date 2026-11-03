@@ -10,6 +10,7 @@ export const translations: Record<Language, any> = {
     // Navigation / Tabs
     navCalculator: 'Calculator',
     navBankRates: 'Compare Banks',
+    navAdvisor: 'Advisor Tools',
     navSchemes: 'Schemes & Subsidies',
     navTaxLegal: 'Tax & Legal Benefits',
     navHiddenTraps: 'Hidden Charges & Traps',
@@ -139,6 +140,7 @@ export const translations: Record<Language, any> = {
     // Navigation / Tabs
     navCalculator: 'ईएमआई कैलकुलेटर',
     navBankRates: 'बैंकों की ब्याज दरें',
+    navAdvisor: 'विशेषज्ञ सलाहकार टूल्स',
     navSchemes: 'सरकारी योजनाएं व सब्सिडी',
     navTaxLegal: 'टैक्स व कानूनी लाभ',
     navHiddenTraps: 'छुपे हुए शुल्क व जाल',
@@ -268,6 +270,7 @@ export const translations: Record<Language, any> = {
     // Navigation / Tabs
     navCalculator: 'EMI કેલ્ક્યુલેટર',
     navBankRates: 'બેંકોના વ્યાજદર સરખામણી',
+    navAdvisor: 'એક્સપર્ટ સલાહકાર ટૂલ્સ',
     navSchemes: 'સરકારી યોજનાઓ અને સબસિડી',
     navTaxLegal: 'ટેક્સ અને કાનૂની લાભો',
     navHiddenTraps: 'છૂપા ચાર્જીસ અને સાવચેતી',

@@ -29,6 +29,11 @@ import { TaxBenefitsSection } from './components/TaxBenefitsSection';
 import { HiddenTrapsSection } from './components/HiddenTrapsSection';
 import { DocumentChecklistSection } from './components/DocumentChecklistSection';
 import { AllBanksDirectory } from './components/AllBanksDirectory';
+import { MaxGainSimulator } from './components/MaxGainSimulator';
+import { RentVsBuyEngine } from './components/RentVsBuyEngine';
+import { CibilRoadmapSection } from './components/CibilRoadmapSection';
+import { GoldenWindowOptimizer } from './components/GoldenWindowOptimizer';
+import { BankHeadToHeadArena } from './components/BankHeadToHeadArena';
 import { AskLoanGuruModal } from './components/AskLoanGuruModal';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
 
@@ -248,6 +253,17 @@ export default function App() {
             <span>Compare Banks</span>
           </button>
           <button
+            onClick={() => setActiveSection('advisor')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+              activeSection === 'advisor'
+                ? 'bg-purple-600 text-white shadow-xs'
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+            <span>Advisor Tools</span>
+          </button>
+          <button
             onClick={() => setActiveSection('schemes')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
               activeSection === 'schemes'
@@ -343,6 +359,20 @@ export default function App() {
               currentLang={currentLang}
             />
 
+            {/* Golden Window Prepayment Optimizer */}
+            <GoldenWindowOptimizer
+              input={loanInput}
+              currentLang={currentLang}
+            />
+
+            {/* If Home loan, also render Home Loan Overdraft (SBI Maxgain) Simulator */}
+            {loanInput.loanType === 'home' && (
+              <MaxGainSimulator
+                input={loanInput}
+                currentLang={currentLang}
+              />
+            )}
+
             {/* Balance Transfer Calculator */}
             <BalanceTransferCalculator
               input={loanInput}
@@ -361,8 +391,49 @@ export default function App() {
               onApplyBankRate={handleApplyBankRate}
             />
 
+            {/* Head-to-Head Bank Comparison Arena */}
+            <BankHeadToHeadArena
+              input={loanInput}
+              currentLang={currentLang}
+            />
+
             {/* Live Search Grounded Rate Verification */}
             <BankRatesSection
+              input={loanInput}
+              currentLang={currentLang}
+            />
+          </div>
+        )}
+
+        {/* SECTION: EXPERT ADVISOR TOOLS */}
+        {activeSection === 'advisor' && (
+          <div className="space-y-8 animate-in fade-in duration-300">
+            {/* 1. Indian Rent vs Buy Calculator */}
+            <RentVsBuyEngine
+              input={loanInput}
+              currentLang={currentLang}
+            />
+
+            {/* 2. Home Loan Overdraft (MaxGain) Simulator */}
+            <MaxGainSimulator
+              input={loanInput}
+              currentLang={currentLang}
+            />
+
+            {/* 3. CIBIL Score Penalty Meter & 60-Day Recovery Blueprint */}
+            <CibilRoadmapSection
+              input={loanInput}
+              currentLang={currentLang}
+            />
+
+            {/* 4. Golden Window Prepayment Timing */}
+            <GoldenWindowOptimizer
+              input={loanInput}
+              currentLang={currentLang}
+            />
+
+            {/* 5. Head-to-Head Sanction Letter Arena */}
+            <BankHeadToHeadArena
               input={loanInput}
               currentLang={currentLang}
             />
