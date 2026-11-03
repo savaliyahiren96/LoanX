@@ -1,0 +1,6 @@
+{
+  "name": "LoanGuru India",
+  "description": "Comprehensive loan comparison, EMI calculator, live bank rates, government subsidies & tax benefit planner for Indian borrowers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
