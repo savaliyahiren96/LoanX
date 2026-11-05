@@ -423,9 +423,15 @@ export const LoanInputForm: React.FC<LoanInputFormProps> = ({
             </div>
 
             <div>
-              <label className="text-xs font-medium text-slate-600 dark:text-slate-400 block mb-1">
-                {t.goldRate}
-              </label>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  {t.goldRate}
+                </label>
+                <span className="text-[10px] text-amber-600 dark:text-amber-400 font-bold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse inline-block" />
+                  Live IBJA Rate
+                </span>
+              </div>
               <input
                 type="number"
                 value={input.goldRatePerGram || 7650}

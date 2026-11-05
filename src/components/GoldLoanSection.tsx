@@ -44,8 +44,9 @@ export const GoldLoanSection: React.FC<GoldLoanSectionProps> = ({
           </div>
         </div>
 
-        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-          Gold Price: ₹{goldPrice.toLocaleString('en-IN')}/g
+        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse inline-block" />
+          Live Benchmark: ₹{goldPrice.toLocaleString('en-IN')}/g ({purity.toUpperCase()})
         </span>
       </div>
 

@@ -52,7 +52,7 @@ export const GovernmentSchemesSection: React.FC<GovernmentSchemesProps> = ({
       const json = await res.json();
       setData(json);
     } catch (err: any) {
-      console.error(err);
+      console.warn('[GovernmentSchemesSection] Schemes fetch notice:', err?.message || err);
       setError(err.message || 'Failed to search government schemes');
     } finally {
       setLoading(false);

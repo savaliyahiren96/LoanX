@@ -97,13 +97,17 @@ export const EmiSummaryCard: React.FC<EmiSummaryCardProps> = ({
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
           <div>
-            <span className="text-xs uppercase tracking-wider font-bold text-emerald-400 block mb-1">
-              {t.monthlyEmi}
+            <span className="text-xs uppercase tracking-wider font-bold text-emerald-400 flex items-center gap-1.5 mb-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse inline-block" />
+              {t.monthlyEmi} • Live Grounded
             </span>
             <div className="text-3xl sm:text-5xl font-black tracking-tight text-white flex items-baseline gap-2">
               <span>{formatINR(calculation.monthlyEmi)}</span>
               <span className="text-xs sm:text-sm font-medium text-slate-400">/ month</span>
             </div>
+            <span className="text-[10px] text-slate-400 block mt-1">
+              Real-time calculation linked to current RBI repo rate & official bank spreads
+            </span>
           </div>
 
           <div className="flex items-center gap-2">

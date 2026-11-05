@@ -143,6 +143,28 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               {t.navHiddenTraps}
             </button>
+            <button
+              onClick={() => onNavigateSection('instagram')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                activeSection === 'instagram'
+                  ? 'bg-pink-50 dark:bg-pink-950/50 text-pink-700 dark:text-pink-300 font-bold ring-1 ring-pink-500/30'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <span className="w-2 h-2 rounded-full bg-pink-500 inline-block animate-pulse" />
+              <span>Instagram Intel</span>
+            </button>
+            <button
+              onClick={() => onNavigateSection('askloanguru')}
+              className={`px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+                activeSection === 'askloanguru'
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold shadow-md'
+                  : 'text-emerald-700 dark:text-emerald-300 font-semibold bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-950/70 border border-emerald-300/50'
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+              <span>AskLoanGuru AI</span>
+            </button>
           </nav>
 
           {/* Right Controls: Language, Dark Mode, Ask AI */}

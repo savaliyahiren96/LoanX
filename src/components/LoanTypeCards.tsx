@@ -104,8 +104,45 @@ export const LoanTypeCards: React.FC<LoanTypeCardsProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 3 Featured Master Cards: Compare Banks, Schemes & Subsidies, Hidden Traps */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {/* AskLoanGuru AI Multilingual Voice Hero Banner */}
+      <div 
+        onClick={() => onNavigateSection('askloanguru')}
+        className="group relative overflow-hidden rounded-3xl p-6 sm:p-7 bg-gradient-to-r from-emerald-900 via-teal-950 to-indigo-950 text-white cursor-pointer shadow-xl hover:shadow-emerald-500/20 border border-emerald-500/30 transition-all hover:-translate-y-0.5"
+      >
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 flex items-center justify-center font-black text-2xl shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition-transform shrink-0">
+              ₹
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg sm:text-xl font-black text-white group-hover:text-emerald-300 transition-colors">
+                  AskLoanGuru AI
+                </h3>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-300 border border-emerald-400/40">
+                  Voice & Text in 11 Languages
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-emerald-200/90 font-medium mt-0.5">
+                &ldquo;Ask Before You Borrow. Understand Before You Sign.&rdquo;
+              </p>
+              <p className="text-xs text-slate-300/80 mt-1 max-w-xl">
+                Speak or type in Hindi, Gujarati, English, Marathi, Bengali, Tamil, Telugu, etc. Audits loan sanction letters, detects hidden insurance traps & teaches loan math in simple words.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 self-start sm:self-center shrink-0">
+            <span className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md group-hover:scale-105 transition-all flex items-center gap-1.5">
+              <span>Talk to AI</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 4 Featured Master Cards: Compare Banks, Schemes & Subsidies, Hidden Traps, Instagram Intelligence */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Compare Banks Card */}
         <div
           onClick={() => onNavigateSection('rates')}
@@ -116,10 +153,10 @@ export const LoanTypeCards: React.FC<LoanTypeCardsProps> = ({
               <Percent className="w-6 h-6" />
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
-              Live Grounded Rates
+              Live Grounded
             </span>
           </div>
-          <h3 className="mt-4 text-lg font-bold text-white group-hover:text-indigo-200 transition-colors flex items-center gap-1.5">
+          <h3 className="mt-4 text-base sm:text-lg font-bold text-white group-hover:text-indigo-200 transition-colors flex items-center gap-1.5">
             Compare Banks <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </h3>
           <p className="mt-1 text-xs text-indigo-200/80 leading-relaxed">
@@ -137,10 +174,10 @@ export const LoanTypeCards: React.FC<LoanTypeCardsProps> = ({
               <Gift className="w-6 h-6" />
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/30 text-emerald-200 border border-emerald-400/30">
-              Save Up to ₹2.67 Lakh
+              Up to ₹2.67 Lakh
             </span>
           </div>
-          <h3 className="mt-4 text-lg font-bold text-white group-hover:text-emerald-200 transition-colors flex items-center gap-1.5">
+          <h3 className="mt-4 text-base sm:text-lg font-bold text-white group-hover:text-emerald-200 transition-colors flex items-center gap-1.5">
             Schemes & Subsidies <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </h3>
           <p className="mt-1 text-xs text-emerald-200/80 leading-relaxed">
@@ -158,14 +195,35 @@ export const LoanTypeCards: React.FC<LoanTypeCardsProps> = ({
               <ShieldAlert className="w-6 h-6" />
             </div>
             <span className="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-500/30 text-amber-200 border border-amber-400/30">
-              Red Flag Checklist
+              Red Flag Audit
             </span>
           </div>
-          <h3 className="mt-4 text-lg font-bold text-white group-hover:text-amber-200 transition-colors flex items-center gap-1.5">
+          <h3 className="mt-4 text-base sm:text-lg font-bold text-white group-hover:text-amber-200 transition-colors flex items-center gap-1.5">
             Hidden Charges & Traps <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </h3>
           <p className="mt-1 text-xs text-amber-200/80 leading-relaxed">
-            Insurance bundling traps, MCLR spread resets, teaser rate gimmicks, and RBI foreclosure rules.
+            Insurance bundling traps, MCLR spread resets, teaser rates, and zero foreclosure rules.
+          </p>
+        </div>
+
+        {/* NEW: Instagram Account Intelligence Card */}
+        <div
+          onClick={() => onNavigateSection('instagram')}
+          className="group relative overflow-hidden rounded-2xl p-5 bg-gradient-to-br from-pink-950 via-rose-950 to-slate-950 text-white cursor-pointer shadow-lg hover:shadow-pink-500/20 hover:-translate-y-0.5 transition-all border border-pink-700/40"
+        >
+          <div className="flex items-start justify-between">
+            <div className="w-12 h-12 rounded-xl bg-pink-500/20 border border-pink-400/30 flex items-center justify-center text-pink-300 group-hover:scale-110 transition-transform">
+              <span className="font-bold text-lg">IG</span>
+            </div>
+            <span className="text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-pink-500/30 text-pink-200 border border-pink-400/30">
+              New Intelligence
+            </span>
+          </div>
+          <h3 className="mt-4 text-base sm:text-lg font-bold text-white group-hover:text-pink-200 transition-colors flex items-center gap-1.5">
+            Instagram Intel <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+          </h3>
+          <p className="mt-1 text-xs text-pink-200/80 leading-relaxed">
+            Audit financial creators, extract loan secrets, verify claims & transfer verified insights.
           </p>
         </div>
       </div>

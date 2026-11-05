@@ -49,8 +49,8 @@ export const BankRatesSection: React.FC<BankRatesSectionProps> = ({
       const json = await res.json();
       setData(json);
     } catch (err: any) {
-      console.error(err);
-      setError(err.message || 'Failed to retrieve live rates');
+      console.warn('[BankRatesSection] Bank rates fetch notice:', err?.message || err);
+      setError(err?.message || 'Failed to retrieve live rates');
     } finally {
       setLoading(false);
     }

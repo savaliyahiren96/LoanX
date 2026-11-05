@@ -34,8 +34,13 @@ import { RentVsBuyEngine } from './components/RentVsBuyEngine';
 import { CibilRoadmapSection } from './components/CibilRoadmapSection';
 import { GoldenWindowOptimizer } from './components/GoldenWindowOptimizer';
 import { BankHeadToHeadArena } from './components/BankHeadToHeadArena';
+import { LiveMarketTicker } from './components/LiveMarketTicker';
 import { AskLoanGuruModal } from './components/AskLoanGuruModal';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
+import { InstagramIntelligenceDashboard } from './components/instagram/InstagramIntelligenceDashboard';
+import { AskLoanGuruDashboard } from './components/askloanguru/AskLoanGuruDashboard';
+import { INITIAL_KNOWLEDGE_LIBRARY } from './data/instagramInitialData';
+import { SavedInsight } from './types';
 
 import { 
   Sparkles, 
@@ -47,12 +52,33 @@ import {
   ShieldAlert, 
   FileText,
   Layers,
-  ArrowRight
+  ArrowRight,
+  Instagram
 } from 'lucide-react';
 
 export default function App() {
   // 1. Language state
   const [currentLang, setCurrentLang] = useState<Language>('en');
+
+  // Instagram Intelligence Saved Knowledge Library state (persisted)
+  const [savedInsights, setSavedInsights] = useState<SavedInsight[]>(() => {
+    try {
+      const saved = localStorage.getItem('loanguru_saved_insights');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('[App] Could not load saved insights:', e);
+    }
+    return INITIAL_KNOWLEDGE_LIBRARY;
+  });
+
+  const handleUpdateInsights = (insights: SavedInsight[]) => {
+    setSavedInsights(insights);
+    try {
+      localStorage.setItem('loanguru_saved_insights', JSON.stringify(insights));
+    } catch (e) {
+      console.warn('[App] Error storing insights:', e);
+    }
+  };
 
   // 2. Dark mode state
   const [darkMode, setDarkMode] = useState<boolean>(() => {
@@ -89,6 +115,13 @@ export default function App() {
     setTimeout(() => {
       setAppliedBankNotice(null);
     }, 5000);
+  };
+
+  const handleSyncGoldRate = (ratePerGram: number) => {
+    setLoanInput((prev) => ({
+      ...prev,
+      goldRatePerGram: ratePerGram,
+    }));
   };
 
   // 5. Loan Input State (Adaptive)
@@ -192,6 +225,12 @@ export default function App() {
         onOpenChat={() => setIsChatOpen(true)}
         activeSection={activeSection}
         onNavigateSection={setActiveSection}
+      />
+
+      {/* Real-Time Indian Market Pulse Ticker (RBI Repo, Live Gold Rates, 10Y Yield, CPI) */}
+      <LiveMarketTicker
+        currentLang={currentLang}
+        onSyncGoldRate={handleSyncGoldRate}
       />
 
       {/* Main Content Area */}
@@ -306,6 +345,28 @@ export default function App() {
           >
             <FileText className="w-3.5 h-3.5" />
             <span>Documents & Apply</span>
+          </button>
+          <button
+            onClick={() => setActiveSection('instagram')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
+              activeSection === 'instagram'
+                ? 'bg-gradient-to-r from-pink-600 to-rose-600 text-white font-bold shadow-xs'
+                : 'text-pink-600 dark:text-pink-400 hover:bg-pink-50 dark:hover:bg-pink-950/40 font-semibold'
+            }`}
+          >
+            <Instagram className="w-3.5 h-3.5" />
+            <span>Instagram Intel</span>
+          </button>
+          <button
+            onClick={() => setActiveSection('askloanguru')}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all ${
+              activeSection === 'askloanguru'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black shadow-sm ring-2 ring-emerald-400/30'
+                : 'text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 font-bold border border-emerald-300/40'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+            <span>AskLoanGuru AI</span>
           </button>
         </div>
 
@@ -479,6 +540,32 @@ export default function App() {
             />
           </div>
         )}
+
+        {/* SECTION 7: INSTAGRAM ACCOUNT INTELLIGENCE */}
+        {activeSection === 'instagram' && (
+          <div className="animate-in fade-in duration-300">
+            <InstagramIntelligenceDashboard
+              onBackToCalculator={() => setActiveSection('calculator')}
+              onOpenLoanAdvisor={() => setActiveSection('askloanguru')}
+              savedInsights={savedInsights}
+              onUpdateInsights={handleUpdateInsights}
+            />
+          </div>
+        )}
+
+        {/* SECTION 8: ASKLOANGURU AI - MULTILINGUAL VOICE & TEXT ASSISTANT */}
+        {activeSection === 'askloanguru' && (
+          <div className="animate-in fade-in duration-300">
+            <AskLoanGuruDashboard
+              input={loanInput}
+              calculation={calculationResult}
+              verifiedInsights={savedInsights}
+              onNavigateToCalculator={() => setActiveSection('calculator')}
+              onNavigateToInstagram={() => setActiveSection('instagram')}
+              onNavigateToComparison={() => setActiveSection('rates')}
+            />
+          </div>
+        )}
       </main>
 
       {/* Floating Ask LoanGuru Chat Button (bottom right) */}
@@ -490,12 +577,13 @@ export default function App() {
         <span>Ask LoanGuru AI</span>
       </button>
 
-      {/* Floating Chat Assistant Modal */}
+      {/* Floating Chat Assistant Modal with Verified Instagram Intelligence Transfer */}
       <AskLoanGuruModal
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
         input={loanInput}
         currentLang={currentLang}
+        verifiedInsights={savedInsights}
       />
 
       {/* Footer & Disclaimer */}

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Language, UserLoanInput, GroundingSource } from '../types';
+import { Language, UserLoanInput, GroundingSource, SavedInsight } from '../types';
 import { translations } from '../translations';
 import { 
   X, 
@@ -10,7 +10,9 @@ import {
   ExternalLink, 
   RefreshCw, 
   HelpCircle,
-  ShieldCheck
+  ShieldCheck,
+  BookmarkCheck,
+  Mic
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -25,6 +27,7 @@ interface AskLoanGuruModalProps {
   onClose: () => void;
   input: UserLoanInput;
   currentLang: Language;
+  verifiedInsights?: SavedInsight[];
 }
 
 export const AskLoanGuruModal: React.FC<AskLoanGuruModalProps> = ({
@@ -32,6 +35,7 @@ export const AskLoanGuruModal: React.FC<AskLoanGuruModalProps> = ({
   onClose,
   input,
   currentLang,
+  verifiedInsights = [],
 }) => {
   const t = translations[currentLang];
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -119,6 +123,7 @@ export const AskLoanGuruModal: React.FC<AskLoanGuruModalProps> = ({
             monthlyIncome: input.monthlyIncome,
             cibilScore: input.cibilScore,
             state: input.state,
+            verifiedInsights: verifiedInsights.filter((i) => i.approvedForLoanAdvisor),
           },
           language: currentLang,
         }),
@@ -136,7 +141,7 @@ export const AskLoanGuruModal: React.FC<AskLoanGuruModalProps> = ({
 
       setMessages((prev) => [...prev, modelMsg]);
     } catch (e: any) {
-      console.error(e);
+      console.warn('[AskLoanGuru] Chat response notice:', e?.message || e);
       setMessages((prev) => [
         ...prev,
         {
@@ -167,9 +172,15 @@ export const AskLoanGuruModal: React.FC<AskLoanGuruModalProps> = ({
                 <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
                   Google Grounded
                 </span>
+                {verifiedInsights.filter((i) => i.approvedForLoanAdvisor).length > 0 && (
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-pink-100 text-pink-800 dark:bg-pink-950 dark:text-pink-300 flex items-center gap-1">
+                    <BookmarkCheck className="w-3 h-3 text-pink-500" />
+                    <span>{verifiedInsights.filter((i) => i.approvedForLoanAdvisor).length} Expert Insights</span>
+                  </span>
+                )}
               </div>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Ethical Indian loan, RBI regulations & tax advisor
+                Ethical Indian loan, RBI regulations, tax advisor & verified Instagram intelligence
               </p>
             </div>
           </div>
@@ -278,6 +289,27 @@ export const AskLoanGuruModal: React.FC<AskLoanGuruModalProps> = ({
               placeholder={`Ask in ${currentLang === 'hi' ? 'हिन्दी' : currentLang === 'gu' ? 'ગુજરાતી' : 'English'} (e.g. foreclosure fees, tax double benefit, CIBIL)...`}
               className="flex-1 px-4 py-2.5 text-xs sm:text-sm bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             />
+            <button
+              type="button"
+              onClick={() => {
+                const SpeechRec = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+                if (!SpeechRec) {
+                  alert('Speech recognition not supported in this browser. Please type your query.');
+                  return;
+                }
+                const rec = new SpeechRec();
+                rec.lang = currentLang === 'hi' ? 'hi-IN' : currentLang === 'gu' ? 'gu-IN' : 'en-IN';
+                rec.onresult = (ev: any) => {
+                  const transcript = ev.results[0][0].transcript;
+                  setInputText(transcript);
+                };
+                rec.start();
+              }}
+              title="Speak by Voice"
+              className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 transition-colors"
+            >
+              <Mic className="w-4 h-4" />
+            </button>
             <button
               type="submit"
               disabled={!inputText.trim() || loading}

@@ -84,7 +84,7 @@ export const TaxBenefitsSection: React.FC<TaxBenefitsProps> = ({
         setData(json);
       }
     } catch (e) {
-      console.error(e);
+      console.warn('[TaxBenefitsSection] Advice fetch notice:', e);
     } finally {
       setLoading(false);
     }
