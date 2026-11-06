@@ -59,18 +59,38 @@ const MARKET_PULSE_TTL = 15 * 60 * 1000; // 15 minutes TTL
 let geminiQuotaCooldownUntil = 0;
 
 function isQuotaExhaustedError(err: any): boolean {
-  const msg = (err?.message || '').toLowerCase();
-  const status = (err?.status || '').toString().toLowerCase();
-  const code = err?.code || err?.error?.code;
-  return status === 'resource_exhausted' || code === 429 || msg.includes('429') || msg.includes('quota') || msg.includes('resource_exhausted');
+  if (!err) return false;
+  try {
+    const raw = typeof err === 'string' ? err : JSON.stringify(err);
+    const msg = (err?.message || '').toLowerCase();
+    const status = (err?.status || err?.error?.status || '').toString().toLowerCase();
+    const code = err?.code || err?.error?.code || err?.status;
+    return (
+      status === 'resource_exhausted' ||
+      status === '429' ||
+      code === 429 ||
+      code === '429' ||
+      msg.includes('429') ||
+      msg.includes('quota') ||
+      msg.includes('resource_exhausted') ||
+      msg.includes('rate limit') ||
+      msg.includes('rate-limit') ||
+      raw.includes('429') ||
+      raw.includes('RESOURCE_EXHAUSTED') ||
+      raw.includes('quota') ||
+      raw.includes('rate-limits')
+    );
+  } catch (e) {
+    return false;
+  }
 }
 
 function handleGeminiError(endpoint: string, err: any) {
   if (isQuotaExhaustedError(err)) {
-    geminiQuotaCooldownUntil = Date.now() + 10 * 60 * 1000; // 10 minutes cooldown
-    console.warn(`[LoanGuru] Notice: Gemini API quota limit active for ${endpoint}. Serving verified Indian banking benchmarks.`);
+    geminiQuotaCooldownUntil = Date.now() + 15 * 60 * 1000; // 15 minutes cooldown
+    console.warn(`[LoanGuru] Notice: Gemini API quota cooldown active for ${endpoint}. Serving verified Indian banking benchmarks.`);
   } else {
-    console.warn(`[LoanGuru] Notice: ${endpoint} transient issue:`, err?.message || err);
+    console.warn(`[LoanGuru] Notice: ${endpoint} fallback:`, err?.message || 'served verified benchmark data');
   }
 }
 
@@ -141,13 +161,16 @@ app.get('/api/gemini/live-market-pulse', async (req, res) => {
 
 Provide a short 3-line market summary followed by verified figures.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }],
+        },
+      }),
+      6000
+    );
 
     const sources = extractGroundingSources(response);
     const text = response.text || '';
@@ -267,13 +290,16 @@ Instructions:
 
 Format your response cleanly with clear markdown headings, a comparison table, and key takeaways.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }],
+        },
+      }),
+      7000
+    );
 
     const sources = extractGroundingSources(response);
     const content = response.text || 'No data found.';
@@ -367,13 +393,16 @@ For each applicable scheme, provide:
 5. Step-by-step application procedure (portal link, bank application, timeline)
 ${langInstruction}`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }],
+        },
+      }),
+      7000
+    );
 
     const sources = extractGroundingSources(response);
     const content = response.text || 'No schemes found.';
@@ -454,13 +483,16 @@ Cover current tax laws under the latest Indian Finance Act:
 8. Negotiation tips with banks before signing sanction letters.
 ${langInstruction}`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents: prompt,
+        config: {
+          tools: [{ googleSearch: {} }],
+        },
+      }),
+      7000
+    );
 
     const sources = extractGroundingSources(response);
     return res.json({
@@ -565,14 +597,17 @@ Guidelines:
       },
     ];
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.8-flash',
-      contents,
-      config: {
-        systemInstruction,
-        tools: [{ googleSearch: {} }],
-      },
-    });
+    const response = await withTimeout(
+      ai.models.generateContent({
+        model: 'gemini-3.8-flash',
+        contents,
+        config: {
+          systemInstruction,
+          tools: [{ googleSearch: {} }],
+        },
+      }),
+      7000
+    );
 
     const sources = extractGroundingSources(response);
     return res.json({

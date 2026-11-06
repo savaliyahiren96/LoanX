@@ -66,8 +66,13 @@ export const LiveMarketTicker: React.FC<LiveMarketTickerProps> = ({
     try {
       const res = await fetch('/api/gemini/live-market-pulse');
       if (res.ok) {
-        const data = await res.json();
-        setMarketData(data);
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const data = await res.json();
+          if (data && data.repoRate) {
+            setMarketData(data);
+          }
+        }
       }
     } catch (e) {
       console.warn('[LiveMarketTicker] Live pulse refresh note:', e);

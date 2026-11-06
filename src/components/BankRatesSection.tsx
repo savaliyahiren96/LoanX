@@ -46,11 +46,16 @@ export const BankRatesSection: React.FC<BankRatesSectionProps> = ({
       });
 
       if (!res.ok) throw new Error('Could not fetch grounded bank rates');
-      const json = await res.json();
-      setData(json);
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const json = await res.json();
+        setData(json);
+      } else {
+        throw new Error('Invalid response format');
+      }
     } catch (err: any) {
       console.warn('[BankRatesSection] Bank rates fetch notice:', err?.message || err);
-      setError(err?.message || 'Failed to retrieve live rates');
+      setError(null); // Don't show scary error UI; keep standard data visible
     } finally {
       setLoading(false);
     }
